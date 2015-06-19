@@ -43,6 +43,17 @@
 - (void)startReadingFromURL:(NSURL *)URL;
 
 /**
+ Begins reading MJPEG data from the given URL.
+ 
+ @param URL The URL to make a request for MJPEG data.
+ 
+ @param cameraUser The user that has access to camera.
+ 
+ @param cameraPassword The password to auth.
+ */
+- (void)startReadingFromURL:(NSURL *)URL withUser:(NSString *)cameraUser andPassword:(NSString *)cameraPassword;
+
+/**
  Stops reading MJPEG data.
  */
 - (void)stop;

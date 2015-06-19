@@ -66,6 +66,31 @@
     [self.dataTask resume];
 }
 
+- (void)startReadingFromURL:(NSURL *)URL withUser:(NSString *)cameraUser andPassword:(NSString *)cameraPassword
+{
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    
+    NSString *userPasswordString = [NSString stringWithFormat:@"%@:%@", cameraUser, cameraPassword];
+    NSData * userPasswordData = [userPasswordString dataUsingEncoding:NSUTF8StringEncoding];
+    NSString *base64EncodedCredential = [userPasswordData base64EncodedStringWithOptions:0];
+    NSString *authString = [NSString stringWithFormat:@"Basic %@", base64EncodedCredential];
+    NSString *userAgentString = @"AppName/com.example.app (iPhone 5s; iOS 7.0.2; Scale/2.0)";
+    
+    configuration.HTTPAdditionalHeaders = @{@"Accept": @"application/json",
+                                            @"Accept-Language": @"en",
+                                            @"Authorization": authString,
+                                            @"User-Agent": userAgentString};
+    
+    self.processingQueue = [[NSOperationQueue alloc] init];
+    self.URLSession = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:self.processingQueue];
+    
+    self.receivedData = [[NSMutableData alloc] init];
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+    self.dataTask = [self.URLSession dataTaskWithRequest:request];
+    [self.dataTask resume];
+}
+
 - (void)stop
 {
     [self.dataTask cancel];

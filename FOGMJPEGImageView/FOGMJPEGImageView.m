@@ -97,6 +97,28 @@
     [self.dataReader startReadingFromURL:url];
 }
 
+- (void)startWithURL:(NSURL *)url withUser:(NSString *)user andPassword:(NSString *)password
+{
+    if ( !url ) {
+        return;
+    }
+    
+    if ( !user ) {
+        return;
+    }
+    
+    if ( !password ) {
+        return;
+    }
+    
+    if ( self.isReadingData ) {
+        return;
+    }
+    
+    self.isReadingData = YES;
+    [self.dataReader startReadingFromURL:url withUser:user andPassword:password];
+}
+
 - (void)stop
 {
     if ( !self.isReadingData ) {
